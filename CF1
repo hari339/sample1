@@ -1,0 +1,26 @@
+Description : 'AWS cloud Formation Template'
+Parameters :
+  KeyName:
+    Description : name of key pair
+    Type : AWS::EC2::KeyPair::KeyName
+  SSHLocation:
+    Description: SSH Location
+    Type: String
+    Default : 0.0.0.0/0
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0b2e99d0f9270573d
+      InstanceType: t2.micro
+      KeyName: !Ref 'KeyName'
+      SecurityGroups: [ !Ref 'InstanceSecurityGroup' ]
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: Allow Htttp to Client
+        SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref 'SSHLocation'
